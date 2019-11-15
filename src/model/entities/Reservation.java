@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import modelexception.DomainException;
+
 public class Reservation {
 
 	private Integer roomNumber;
@@ -20,7 +22,10 @@ public class Reservation {
 
 	}
 
-	public Reservation(Integer roomNumber, Date checKin, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checKin, Date checkOut){
+		if (!checkOut.after(checKin)) {
+			throw new DomainException(" Check-out date must be after check-in date");
+		} 
 		this.roomNumber = roomNumber;
 		this.checKin = checKin;
 		this.checkOut = checkOut;
@@ -43,22 +48,22 @@ public class Reservation {
 		return checkOut;
 	}
 
-	public String upDtaedates(Date checKin, Date checkOut) {
+	public void upDtaedates(Date checKin, Date checkOut){
 		
 		Date now = new Date();
 		
 		if (checKin.before(now) || checkOut.before(now)) {
 			
-			return " Reservation dates for update must be future dates";
+			throw new DomainException(" Reservation dates for update must be future dates"); 
 		} 
 		else if (!checkOut.after(checKin)) {
 			
-			return " Check-out date must be after check-in date";
+			throw new DomainException(" Check-out date must be after check-in date");
 		} 
 		
 		this.checKin = checKin;
 		this.checkOut = checkOut;
-		return null;
+		
 	}
 	
 	//foi usado long pois e um inteiro muito maior que Integer
