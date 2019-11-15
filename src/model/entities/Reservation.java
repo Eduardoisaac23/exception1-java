@@ -43,10 +43,22 @@ public class Reservation {
 		return checkOut;
 	}
 
-	public void upDtaedates(Date checKin, Date checkOut) {
+	public String upDtaedates(Date checKin, Date checkOut) {
+		
+		Date now = new Date();
+		
+		if (checKin.before(now) || checkOut.before(now)) {
+			
+			return " Reservation dates for update must be future dates";
+		} 
+		else if (!checkOut.after(checKin)) {
+			
+			return " Check-out date must be after check-in date";
+		} 
+		
 		this.checKin = checKin;
 		this.checkOut = checkOut;
-		
+		return null;
 	}
 	
 	//foi usado long pois e um inteiro muito maior que Integer
